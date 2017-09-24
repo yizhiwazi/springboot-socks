@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="common/base::styles"></div>
+</head>
+<body>
+
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+    <legend>响应式的表单集合</legend>
+</fieldset>
+
+<form class="layui-form" action="" th:object="${user}">
+    <div class="layui-form-item">
+        <label class="layui-form-label">用户名称</label>
+        <div class="layui-input-block">  <!-- 配合th:object 可以省略对象名-->
+            <input type="text" name="username" th:value="*{username}" lay-verify="required" class="layui-input"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">登录密码</label>
+        <div class="layui-input-block">
+            <input type="text" name="password" th:value="*{password}" lay-verify="required" class="layui-input"/>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">验证手机</label>
+            <div class="layui-input-inline">
+                <input type="tel" name="phone" lay-verify="phone" autocomplete="off" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">验证邮箱</label>
+            <div class="layui-input-inline">
+                <input type="text" name="email" lay-verify="email" autocomplete="off" class="layui-input"/>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="layui-form-item">
+        <button class="layui-btn" lay-submit="" lay-filter="demo2">跳转式提交</button>
+    </div>
+</form>
+
+
+<div th:replace="common/base::scripts"></div>
+
+<script>
+    layui.use(['form','layer'],function(){
+         var from = layui.form();
+         var layer = layui.layer;
+
+    });
+
+</script>
+
+</body>
+</html>

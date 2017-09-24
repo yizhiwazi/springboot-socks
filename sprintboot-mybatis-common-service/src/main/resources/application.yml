@@ -1,0 +1,22 @@
+
+spring:
+  datasource:
+    url: jdbc:oracle:thin:@localhost:1521:XE
+    username: admin
+    password: admin
+    type: com.alibaba.druid.pool.DruidDataSource # Druid
+    druid:
+      filters: stat
+
+mybatis:
+# mapper-locations: classpath:mapper/**.xml
+  type-aliases-package: com.hehe.domain
+  configuration:
+   map-underscore-to-camel-case: true
+
+server:
+  port: 8090
+
+
+
+
