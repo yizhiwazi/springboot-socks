@@ -1,5 +1,0 @@
-
-spring:
-  thymeleaf:
-    cache: false
-    prefix: classpath:/views/

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Thymeleaf</title>
+</head>
+<body>
+<h2>查询用户信息</h2>
+<!-- 使用th:object 搭配*{} 可以省略对象名  -->
+<form action="/" th:object="${user}" >
+    <input type="hidden" name="userId" th:value="*{userId}" />
+    <input type="text" name="username" th:value="*{username}" />
+    <input type="text" name="password" th:value="*{password}" />
+</form>
+
+</body>
+</html>
