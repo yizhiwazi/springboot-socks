@@ -1,7 +1,0 @@
-
-spring:
-  mvc:
-    view:
-      prefix: /WEB-INF/views/  #Read From Web Resource Directory (src/main/webapp)
-      suffix: .jsp
-
