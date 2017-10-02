@@ -65,7 +65,7 @@
 		</pluginRepository>
 	</pluginRepositories>
 
-	<!--构建插件 -->
+	<!--构建插件-->
 	<build>
 		<plugins>
 			<plugin>
