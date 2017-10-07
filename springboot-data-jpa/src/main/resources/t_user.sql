@@ -1,8 +1,8 @@
 
 DROP TABLE IF EXISTS `t_user`;
 CREATE TABLE `t_user` (
-  `userid` varchar(50) ,
-  `username` varchar(50) ,
+  `USER_ID` varchar(50) ,
+  `USERNAME` varchar(50) ,
   `PASSWORD` varchar(50) 
 ) ;
 
