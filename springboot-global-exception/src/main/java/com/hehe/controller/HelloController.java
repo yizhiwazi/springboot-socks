@@ -19,7 +19,7 @@ public class HelloController {
                 new NoSuchMethodException(),
                 new SQLException()};
 
-        if ((Math.random()) < 0.6) {
+        if ((Math.random()) < 0.8) {
             //情况1：要么抛出异常
             throw exceptions[(int) (Math.random() * exceptions.length)];
         } else {
