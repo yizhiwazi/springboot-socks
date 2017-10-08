@@ -1,7 +1,6 @@
 package com.hehe.entity;
 
 import java.io.Serializable;
-
 public class R<T> implements Serializable {
 
     private static final long serialVersionUID = -4577255781088498763L;
@@ -17,7 +16,6 @@ public class R<T> implements Serializable {
     public static R isOk(){
         return new R();
     }
-
     public static R isFail(){
         return new R().status(FAIL);
     }
