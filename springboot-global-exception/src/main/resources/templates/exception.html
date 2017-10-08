@@ -8,7 +8,16 @@
 
 <h2> 服务异常，请稍后再试。</h2>
 <h3 th:text="${'问题地址：'+exUrl}"></h3>
-<h3 th:text="${'问题类型：'+exMsg}"></h3>
+<h3 th:text="${'问题类型：'+exMsg+' '+exInfo}"></h3>
+
+<hr />
+
+<h2>Whitelabel Error Page</h2>
+<p>This application has no explicit mapping for /error, so you are seeing this as a fallback.</p>
+<div id="created">Mon Oct 09 01:11:05 CST 2017</div>
+<div>There was an unexpected error <span th:text="${exInfo}"></span></div>
+<div>No message available</div>
+
 
 </body>
 </html>

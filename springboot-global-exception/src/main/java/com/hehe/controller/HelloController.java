@@ -31,7 +31,7 @@ public class HelloController {
     @GetMapping("/")
     public R index() throws Exception {
         randomException();//模拟测试环境,根据概率来抛出异常！
-        return R.isOk().data(Arrays.asList("用户数据展示！", "你在刷新试试！"));
+        return R.isOk().data(Arrays.asList("我是正常数据1！", "我是正常数据2！你在刷新试试！"));
     }
 
 }

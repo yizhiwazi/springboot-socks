@@ -1,6 +1,7 @@
 package com.hehe.exception;
 
 import com.hehe.entity.R;
+import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -29,8 +30,14 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(RuntimeException.class)
     public String runtimeExHandler(HttpServletRequest req, Exception ex, Model model) {
-        model.addAttribute("exUrl", req.getRequestURL().toString());
-        model.addAttribute("exMsg", ex.toString());
+        //获取HTTP状态码
+        Integer statusCode = (Integer) req.getAttribute("javax.servlet.error.status_code");
+        HttpStatus httpStatus= statusCode!=null?HttpStatus.valueOf(statusCode):HttpStatus.INTERNAL_SERVER_ERROR;
+        String exInfo=String.format("(type=%s,status=%s.)",httpStatus.getReasonPhrase(),httpStatus.value());
+        //返回相关信息
+        model.addAttribute("exInfo", exInfo);//HTTP状态码
+        model.addAttribute("exUrl", req.getRequestURL().toString());//问题地址
+        model.addAttribute("exMsg", ex.toString());//问题信息
         return EX_FALLBACK_VIEW;
     }
 
@@ -42,4 +49,5 @@ public class GlobalExceptionHandler {
     public R defaultExHandler(HttpServletRequest req, Exception e) {
         return R.isFail(e).data("全局异常JSON：服务异常,请稍后再试！！:" + req.getRequestURL());
     }
+
 }
