@@ -24,7 +24,7 @@ import java.util.Map;
  * @author yizhiwazi
  */
 
-@ControllerAdvice
+//@ControllerAdvice
 public class GlobalExceptionHandler {
     private final static String EX_FALLBACK_VIEW = "exception";//指定异常信息页
 
