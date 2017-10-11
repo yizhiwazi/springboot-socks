@@ -7,7 +7,9 @@ import org.springframework.boot.autoconfigure.web.ErrorProperties;
 import org.springframework.boot.autoconfigure.web.ErrorProperties.IncludeStacktrace;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.autoconfigure.web.servlet.error.AbstractErrorController;
+import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
+import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,9 +21,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * {ErrorController 标记接口 用于渲染错误/异常详情}
- * {AbstractErrorController 抽象模板}
- * {BasicErrorController 默认实现 }
+ * {@link ErrorController 标记接口 用于渲染错误/异常详情}
+ * {@link AbstractErrorController 抽象模板}
+ * {@link BasicErrorController 默认实现 }
  */
 @Controller
 @RequestMapping("${server.error.path:/error}")
