@@ -5,7 +5,7 @@
 	<!-- 基本信息 -->
 	<description>SpringBoot 多模块构建示例</description>
 	<modelVersion>4.0.0</modelVersion>
-	<name>springboot-integration</name>
+	<name>spring-boot-integration</name>
 	<packaging>pom</packaging>
 
 	<!-- 项目说明：这里作为聚合工程的父工程 -->
@@ -32,7 +32,6 @@
 	<!-- 版本说明：这里统一管理依赖的版本号 -->
 	<dependencyManagement>
 		<dependencies>
-
 			<dependency>
 				<groupId>com.hehe</groupId>
 				<artifactId>mm-web</artifactId>
@@ -52,12 +51,6 @@
 				<groupId>com.hehe</groupId>
 				<artifactId>mm-entity</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
-			</dependency>
-
-			<dependency>
-				<groupId>mysql</groupId>
-				<artifactId>mysql-connector-java</artifactId>
-				<version>5.1.42</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
