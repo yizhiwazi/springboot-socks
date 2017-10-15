@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>GlobalError</title>
+</head>
+<h1>统一祖国 振兴中华</h1>
+<h2>服务异常，请稍后再试。</h2>
+<div th:object="${errorInfo}">
+    <h3 th:text="*{'发生时间：'+time}"></h3>
+    <h3 th:text="*{'访问地址：'+url}"></h3>
+    <h3 th:text="*{'问题类型：'+error}"></h3>
+    <h3 th:text="*{'通信状态：'+statusCode+','+reasonPhrase}"></h3>
+    <h3 th:text="*{'堆栈信息：'+stackTrace}"></h3>
+</div>
+</body>
+</html>
