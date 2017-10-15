@@ -8,34 +8,33 @@
 	<artifactId>springboot-externalized-configuration</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>springboot-externalized-configuration</name>
-	<description>Spring Boot 配置文件详解</description>
+	<name>spring-boot-externalized-configuration</name>
+	<description>SpringBoot 配置文件详解</description>
 
 	<!--继承信息 -->
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.0.0.M4</version>
-		<relativePath/>
 	</parent>
 
 	<!--依赖管理 -->
 	<dependencies>
-		<dependency>
+		<dependency><!--添加Web依赖-->
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		<dependency>
+		<dependency><!--添加MySQL驱动依赖-->
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.42</version>
 		</dependency>
-		<dependency>
+		<dependency><!--添加配置处理器依赖-->
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
 		</dependency>
-		<dependency>
+		<dependency><!--添加测试依赖-->
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
@@ -74,6 +73,5 @@
 			</plugin>
 		</plugins>
 	</build>
-
 
 </project>
