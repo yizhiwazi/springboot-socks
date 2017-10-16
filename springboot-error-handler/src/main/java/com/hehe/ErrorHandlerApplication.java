@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,18 +15,33 @@ import java.util.List;
 @SpringBootApplication
 @RestController
 public class ErrorHandlerApplication {
+    /**
+     * 随机抛出异常.
+     */
+    private void randomException() throws Exception {
+        Exception[] exceptions = { //异常集合
+                new NullPointerException(),
+                new ArrayIndexOutOfBoundsException(),
+                new NumberFormatException(),
+                new SQLException()};
+        //发生概率
+        double probability = 0.75;
+        if (Math.random() < probability) {
+            //情况1：要么抛出异常
+            throw exceptions[(int) (Math.random() * exceptions.length)];
+        } else {
+            //情况2：要么继续运行
+        }
+
+    }
 
     /**
-     * 模拟用户数据访问
+     * 模拟用户数据访问.
      */
     @GetMapping("/")
     public List index() throws Exception {
-        //概率指数
-        double probability = 0.6;
-        if ((Math.random()) < probability) {
-            throw new NullPointerException("空指针");
-        }
-        return Arrays.asList("用户数据1！", "用户数据2！你在刷新试试！");
+        randomException();
+        return Arrays.asList("正常用户数据1!", "正常用户数据2! 请按F5刷新!!");
     }
 
     public static void main(String[] args) {

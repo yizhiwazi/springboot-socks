@@ -6,27 +6,42 @@ import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.autoconfigure.web.servlet.error.AbstractErrorController;
 import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController;
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.servlet.HandlerExceptionResolver;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.time.LocalDateTime;
 
 /**
- * 主要通途: 构建错误信息(ErrorInfo)
+ * 主要通途: 快速构建错误信息.
  * 设计说明:
- * 1.单独抽出获取错误信息的逻辑,让错误控制器{@link GlobalErrorController}更专注于业务。
- * 2.读取配置信息{@link ErrorProperties} 例如是否打印堆栈轨迹等。
+ * 1.提供常用的API(例如#getError,#getHttpStatus),让控制器/处理器更专注于业务开发!!
+ * 2.从配置文件读取错误配置,例如是否打印堆栈轨迹等。
  *
  * @author yizhiwazi
+ * @see ErrorInfo
+ * @see ErrorProperties
  */
+@Order(Ordered.HIGHEST_PRECEDENCE)
 @Component
-public class ErrorInfoBuilder {
+public class ErrorInfoBuilder implements HandlerExceptionResolver, Ordered {
+
+    /**
+     * 错误KEY
+     */
+    private final static String ERROR_NAME = "hehe.error";
 
     /**
      * 错误配置(ErrorConfiguration)
@@ -42,22 +57,26 @@ public class ErrorInfoBuilder {
     }
 
     /**
-     * 错误构造器 (ErrorConstructor) 传递配置属性：server.xx -> server.error.xx
+     * 错误构造器 (Constructor) 传递配置属性：server.xx -> server.error.xx
      */
     public ErrorInfoBuilder(ServerProperties serverProperties) {
         this.errorProperties = serverProperties.getError();
     }
 
     /**
-     * 获取错误信息.(ErrorInfo)
+     * 构建错误信息.(ErrorInfo)
      */
     public ErrorInfo getErrorInfo(HttpServletRequest request) {
+
         return getErrorInfo(request, getError(request));
     }
 
+    /**
+     * 构建错误信息.(ErrorInfo)
+     */
     public ErrorInfo getErrorInfo(HttpServletRequest request, Throwable error) {
         ErrorInfo errorInfo = new ErrorInfo();
-        errorInfo.setTime(LocalDateTime.now().toString().replace('T', ' '));
+        errorInfo.setTime(LocalDateTime.now().toString());
         errorInfo.setUrl(request.getRequestURL().toString());
         errorInfo.setError(error.toString());
         errorInfo.setStatusCode(getHttpStatus(request).value());
@@ -67,34 +86,43 @@ public class ErrorInfoBuilder {
     }
 
     /**
-     * 获取错误(Exception/Error)
+     * 获取错误.(Error/Exception)
+     * <p>
+     * 获取方式：通过Request对象获取(Key="javax.servlet.error.exception").
+     *
+     * @see DefaultErrorAttributes #addErrorDetails
      */
     public Throwable getError(HttpServletRequest request) {
-
-        Throwable error = (Throwable) request.getAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE);
-        if (error != null) {//当获取错误非空,取出RootCause.
+        //根据HandlerExceptionResolver接口方法来获取错误.
+        Throwable error = (Throwable) request.getAttribute(ERROR_NAME);
+        //根据Request对象获取错误.
+        if (error == null) {
+            error = (Throwable) request.getAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE);
+        }
+        //当获取错误非空,取出RootCause.
+        if (error != null) {
             while (error instanceof ServletException && error.getCause() != null) {
                 error = error.getCause();
             }
-        } else { //当获取错误为null,此时我们设置错误信息即可.
+        }//当获取错误为null,此时我们设置错误信息即可.
+        else {
             String message = (String) request.getAttribute(WebUtils.ERROR_MESSAGE_ATTRIBUTE);
             if (StringUtils.isEmpty(message)) {
                 HttpStatus status = getHttpStatus(request);
-                message = status.value() + status.getReasonPhrase();
+                message = "Unknown Exception But " + status.value() + " " + status.getReasonPhrase();
             }
             error = new Throwable(message);
         }
         return error;
     }
 
-
     /**
      * 获取通信状态(HttpStatus)
      *
-     * @see AbstractErrorController #getHttpStatus
+     * @see AbstractErrorController #getStatus
      */
     public HttpStatus getHttpStatus(HttpServletRequest request) {
-        Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
+        Integer statusCode = (Integer) request.getAttribute(WebUtils.ERROR_STATUS_CODE_ATTRIBUTE);
         try {
             return statusCode != null ? HttpStatus.valueOf(statusCode) : HttpStatus.INTERNAL_SERVER_ERROR;
         } catch (Exception ex) {
@@ -102,9 +130,8 @@ public class ErrorInfoBuilder {
         }
     }
 
-
     /**
-     * 获取堆栈轨迹
+     * 获取堆栈轨迹(StackTrace)
      *
      * @see DefaultErrorAttributes  #addStackTrace
      */
@@ -119,7 +146,7 @@ public class ErrorInfoBuilder {
     }
 
     /**
-     * 判断是否包含堆栈轨迹.
+     * 判断是否包含堆栈轨迹.(isIncludeStackTrace)
      *
      * @see BasicErrorController #isIncludeStackTrace
      */
@@ -141,5 +168,22 @@ public class ErrorInfoBuilder {
         return false;
     }
 
+    /**
+     * 保存错误/异常.
+     *
+     * @see DispatcherServlet #processHandlerException 进行选举HandlerExceptionResolver
+     */
+    @Override
+    public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, @Nullable Object handler, Exception ex) {
+        request.setAttribute(ERROR_NAME, ex);
+        return null;
+    }
 
+    /**
+     * 提供优先级 或用于排序
+     */
+    @Override
+    public int getOrder() {
+        return Ordered.HIGHEST_PRECEDENCE;
+    }
 }

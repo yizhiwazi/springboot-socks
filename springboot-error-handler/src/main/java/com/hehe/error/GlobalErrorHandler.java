@@ -15,6 +15,11 @@ import javax.servlet.http.HttpServletRequest;
  * {@link ExceptionHandler 指定捕捉异常}
  * {@link ModelAndView 返回异常信息页(View)}
  * {@link ResponseBody 返回异常信息(JSON)}
+ * <p>
+ * 使用@ExceptionHandler时候需注意如下几点：
+ * 1.获取异常：直接在方法参数注入
+ * 2.常见缺点：无法捕捉404类异常
+ * 3.替代方案：实现ErrorController
  *
  * @author yizhiwazi
  */
@@ -34,10 +39,13 @@ public class GlobalErrorHandler {
 
     /**
      * 方式1：针对某类异常,返回指定的异常信息页(View).
+     *
+     * 方法参数：(HttpServletRequest request,Throwable ex,HttpServletResponse response,HandlerMethod handlerMethod)
      */
     @ExceptionHandler(RuntimeException.class)
     public ModelAndView runtimeExHandler(HttpServletRequest request, Throwable error) {
-        return new ModelAndView(DEFAULT_ERROR_VIEW, "errorInfo", errorInfoBuilder.getErrorInfo(request, error));
+
+        return new ModelAndView(DEFAULT_ERROR_VIEW, "errorInfo", errorInfoBuilder.getErrorInfo(request,error));
     }
 
     /**
