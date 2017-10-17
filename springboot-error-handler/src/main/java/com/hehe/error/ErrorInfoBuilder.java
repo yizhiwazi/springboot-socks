@@ -111,7 +111,7 @@ public class ErrorInfoBuilder implements HandlerExceptionResolver, Ordered {
                 HttpStatus status = getHttpStatus(request);
                 message = "Unknown Exception But " + status.value() + " " + status.getReasonPhrase();
             }
-            error = new Throwable(message);
+            error = new Exception(message);
         }
         return error;
     }
