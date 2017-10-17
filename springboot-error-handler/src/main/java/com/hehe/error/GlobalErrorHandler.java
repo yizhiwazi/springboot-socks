@@ -38,24 +38,23 @@ public class GlobalErrorHandler {
     private ErrorInfoBuilder errorInfoBuilder;
 
     /**
-     * 方式1：针对某类异常,返回指定的异常信息页(View).
-     *
-     * 方法参数：(HttpServletRequest request,Throwable ex,HttpServletResponse response,HandlerMethod handlerMethod)
-     */
-    @ExceptionHandler(RuntimeException.class)
-    public ModelAndView runtimeExHandler(HttpServletRequest request, Throwable error) {
-
-        return new ModelAndView(DEFAULT_ERROR_VIEW, "errorInfo", errorInfoBuilder.getErrorInfo(request,error));
-    }
-
-    /**
-     * 方式2：针对某类异常,返回异常信息(JSON).
+     * 根据业务规则,统一处理异常。
      */
     @ExceptionHandler(Exception.class)
     @ResponseBody
-    public ErrorInfo exHandler(HttpServletRequest request, Throwable error) {
-        return errorInfoBuilder.getErrorInfo(request, error);
+    public Object exceptionHandler(HttpServletRequest request, Throwable error) {
+
+        //1.若为AJAX请求,则返回异常信息(JSON)
+        if (isAjaxRequest(request)) {
+            return errorInfoBuilder.getErrorInfo(request,error);
+        }
+        //2.其余请求,则返回指定的异常信息页(View).
+        return new ModelAndView(DEFAULT_ERROR_VIEW, "errorInfo", errorInfoBuilder.getErrorInfo(request, error));
     }
 
+    private boolean isAjaxRequest(HttpServletRequest request) {
+
+        return "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
+    }
 
 }
