@@ -29,6 +29,7 @@ import java.time.LocalDateTime;
  * 设计说明:
  * 1.提供常用的API(例如#getError,#getHttpStatus),让控制器/处理器更专注于业务开发!!
  * 2.从配置文件读取错误配置,例如是否打印堆栈轨迹等。
+ * 3.添加@Order注解和实现HandlerExceptionResolver接口是为了在获取异常。
  *
  * @author yizhiwazi
  * @see ErrorInfo
@@ -77,7 +78,7 @@ public class ErrorInfoBuilder implements HandlerExceptionResolver, Ordered {
     public ErrorInfo getErrorInfo(HttpServletRequest request, Throwable error) {
         ErrorInfo errorInfo = new ErrorInfo();
         errorInfo.setTime(LocalDateTime.now().toString());
-        errorInfo.setUrl(request.getRequestURL().toString());
+        errorInfo.setUrl((String) request.getAttribute(WebUtils.ERROR_REQUEST_URI_ATTRIBUTE));
         errorInfo.setError(error.toString());
         errorInfo.setStatusCode(getHttpStatus(request).value());
         errorInfo.setReasonPhrase(getHttpStatus(request).getReasonPhrase());
@@ -109,7 +110,7 @@ public class ErrorInfoBuilder implements HandlerExceptionResolver, Ordered {
             String message = (String) request.getAttribute(WebUtils.ERROR_MESSAGE_ATTRIBUTE);
             if (StringUtils.isEmpty(message)) {
                 HttpStatus status = getHttpStatus(request);
-                message = "Unknown Exception But " + status.value() + " " + status.getReasonPhrase();
+                message = "Unknown Exception With " + status.value() + " " + status.getReasonPhrase();
             }
             error = new Exception(message);
         }
