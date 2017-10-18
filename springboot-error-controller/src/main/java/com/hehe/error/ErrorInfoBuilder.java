@@ -28,7 +28,7 @@ import java.time.LocalDateTime;
  * 主要通途: 快速构建错误信息.
  * 设计说明:
  * 1.提供常用的API(例如#getError,#getHttpStatus),让控制器/处理器更专注于业务开发!!
- * 2.从配置文件读取错误配置,例如是否打印堆栈轨迹等。
+ * 2.从配置文件读取错误配置信息,例如是否打印堆栈轨迹等。
  * 3.添加@Order注解和实现HandlerExceptionResolver接口是为了在获取异常。
  *
  * @author yizhiwazi
