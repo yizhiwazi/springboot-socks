@@ -1,58 +1,38 @@
 package com.hehe.config;
 
-import io.swagger.annotations.*;
-import io.swagger.models.Contact;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import springfox.documentation.annotations.ApiIgnore;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
 /**
- * Swagger2使用说明：
- * <p>
- * {@link Api ：用在类上，说明该类的作用}
- * {@link ApiOperation ：用在方法上，说明方法的作用}
- * {@link ApiIgnore ：使用该注解忽略这个API}
- * {@link ApiImplicitParams ：用在方法上包含一组参数说明}
- * {@link ApiImplicitParam ：
- * 参数列表如下：
- * name：参数名
- * dataType：参数类型
- * required：参数是否必须传
- * value：参数描述值
- * defaultValue：默认值
- * paramType：位置类型 [header,query,path,body,form]
- * }
- * <p>
+ * 主要用途：开启在线接口文档和添加相关配置
+ *
+ * @author yizhiwazi
  */
-@Configuration //让Spring来加载该类配置
-@EnableSwagger2 //启用Swagger2
+
+@Configuration
+@EnableSwagger2
 public class Swagger2Config {
-
-    //首页API信息
-    private static final ApiInfo apiInfo = new ApiInfoBuilder()
-            .termsOfServiceUrl("https://github.com/yizhiwazi")
-            .title("XX系统接口文档")
-            .description("about xx")
-            .contact("yizhiwazi")
-            .version("1.0")
-            .build();
-
-    //列表摘要
+    /**
+     * 添加摘要信息(Docket)
+     */
     @Bean
-    public Docket oneapi() {
+    public Docket controllerApi() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .apiInfo(apiInfo)
+                .apiInfo(new ApiInfoBuilder()
+                        .title("标题：某公司_用户信息管理系统_接口文档")
+                        .description("描述：用于管理集团旗下公司的人员信息,具体包括XXX,XXX模块...")
+                        .contact(new Contact("一只袜子",null,null))
+                        .version("版本号:1.0")
+                        .build())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.hehe.controller"))
                 .paths(PathSelectors.any())
                 .build();
     }
-
 }
