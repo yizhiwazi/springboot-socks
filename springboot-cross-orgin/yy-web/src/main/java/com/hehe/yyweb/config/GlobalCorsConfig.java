@@ -13,7 +13,8 @@ public class GlobalCorsConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/s/**");
+                //配置允许跨域访问的路径
+                registry.addMapping("/**");
             }
         };
     }
