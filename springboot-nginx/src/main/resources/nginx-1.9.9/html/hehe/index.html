@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Page Index</title>
+</head>
+<body>
+<h2>前台系统7000</h2>
+<p id="info1"></p>
+<p id="info2"></p>
+</body>
+
+<script src="js/jquery.js"></script>
+<script>
+        $.ajax({
+            url: 'http://localhost:7000/api/user/login/verifyCode',
+            type: "POST",
+            success: function (data) {
+                //1.获取验证码
+                $("#info1").html("跨域访问成功:verifyCode:" + data);
+                //2.核对验证码
+                $.ajax({
+                    url: 'http://localhost:7000/api/user/login/checkVerifyCode',
+                    type: "POST",
+                    success: function (data) {
+                        $("#info2").html("跨域访问成功:checkVerifyCode:" + data);
+                    }
+                });
+            },
+            error: function (data) {
+                $("#info1").html("跨域失败!!");
+            }
+        });
+</script>
+
+</html>
