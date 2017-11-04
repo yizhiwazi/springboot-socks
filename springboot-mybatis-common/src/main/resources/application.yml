@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    #连接MySQL
+    url: jdbc:mysql://localhost:3306/socks?useSSL=false
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+
+mybatis:
+  configuration:
+   #配置项：开启下划线到驼峰的自动转换. 作用：将数据库字段根据驼峰规则自动注入到对象属性。
+   map-underscore-to-camel-case: true
+
+logging:
+  level:
+   #打印SQL信息
+   com.hehe.mapper: debug
