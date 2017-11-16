@@ -35,6 +35,6 @@ public class BaseServiceImpl<T> implements BaseService<T> {
 
     @Override
     public int delete(T entity) {
-        return mapper.delete(entity);
+        return mapper.deleteByPrimaryKey(entity);
     }
 }
