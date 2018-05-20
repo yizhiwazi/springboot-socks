@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>springboot-data-jpa-save</name>
-    <description>Demo project for Spring Boot</description>
+    <description>使用JPA Save方法不保存Null属性</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
