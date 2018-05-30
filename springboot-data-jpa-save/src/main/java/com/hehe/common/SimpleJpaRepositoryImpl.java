@@ -14,6 +14,7 @@ import java.beans.PropertyDescriptor;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * 通用JpaRepository实现类
@@ -39,10 +40,24 @@ public class SimpleJpaRepositoryImpl<T, ID> extends SimpleJpaRepository<T, ID> {
     public <S extends T> S save(S entity) {
         //获取ID
         ID entityId = (ID) entityInformation.getId(entity);
-        //获取最新数据
-        Optional<T> optionalT = findById(entityId);
+        Optional<T> optionalT;
+        if (StringUtils.isEmpty(entityId)) {
+            String uuid = UUID.randomUUID().toString();
+            //防止UUID重复
+            if (findById((ID) uuid).isPresent()) {
+                uuid = UUID.randomUUID().toString();
+            }
+            //若ID为空 则设置为UUID
+            new BeanWrapperImpl(entity).setPropertyValue(entityInformation.getIdAttribute().getName(), uuid);
+            //标记为新增数据
+            optionalT = Optional.empty();
+        } else {
+            //若ID非空 则查询最新数据
+            optionalT = findById(entityId);
+        }
         //获取空属性并处理成null
         String[] nullProperties = getNullProperties(entity);
+        //若根据ID查询结果为空
         if (!optionalT.isPresent()) {
             em.persist(entity);//新增
             return entity;
