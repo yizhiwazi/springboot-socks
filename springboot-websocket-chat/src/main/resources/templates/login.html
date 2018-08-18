@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>登陆聊天</title>
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <style>
+        *, *:after, *:before {
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #383a3c url('/img/login-bg.jpg');
+            font-weight: 400;
+            font-size: 1em;
+            line-height: 1.25;
+            font-family: 'Raleway', Calibri, Arial, sans-serif;
+        }
+
+        a, button {
+            outline: none;
+        }
+
+        a {
+            color: #566473;
+            text-decoration: none;
+        }
+
+        a:hover, a:focus {
+            color: #34495e;
+        }
+
+        section {
+            padding: 1em;
+            text-align: center;
+        }
+
+        .logo_box {
+            width: 400px;
+            height: 500px;
+            padding: 35px;
+            color: #EEE;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -200px;
+            margin-top: -250px;
+        }
+
+        .logo_box h3 {
+            text-align: center;
+            height: 20px;
+            font: 20px "microsoft yahei", Helvetica, Tahoma, Arial, "Microsoft jhengHei", sans-serif;
+            color: #FFFFFF;
+            line-height: 20px;
+            padding: 0 0 35px 0;
+        }
+
+        .input_outer {
+            height: 46px;
+            padding: 0 5px;
+            margin-bottom: 30px;
+            border-radius: 50px;
+            position: relative;
+            border: rgba(255, 255, 255, 0.2) 2px solid !important;
+        }
+
+        .u_user {
+            width: 25px;
+            height: 25px;
+            background-position: -125px 0;
+            position: absolute;
+            margin: 10px 13px;
+        }
+
+        .us_uer {
+            width: 25px;
+            height: 25px;
+            background-position: -125px -34px;
+            position: absolute;
+            margin: 10px 13px;
+        }
+
+        .text {
+            width: 220px;
+            height: 46px;
+            outline: none;
+            display: inline-block;
+            font: 14px "microsoft yahei", Helvetica, Tahoma, Arial, "Microsoft jhengHei";
+            margin-left: 50px;
+            border: none;
+            background: none;
+            line-height: 46px;
+        }
+
+        .mb2 {
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        .mb2 a {
+            text-decoration: none;
+            outline: none;
+        }
+
+        .submit {
+            padding: 15px;
+            margin-top: 20px;
+            display: block;
+            color: #FFFFFF
+        }
+
+        .act-but {
+            line-height: 20px;
+            text-align: center;
+            font-size: 20px;
+            border-radius: 50px;
+            background: #0096e6;
+        }
+
+        #username {
+            color: #FFFFFF !important
+        }
+
+        #password {
+            color: #FFFFFF !important;
+            position: absolute;
+            z-index: 100;
+        }
+
+    </style>
+</head>
+<body>
+<div class="logo_box">
+    <h3>登录聊天</h3>
+    <form>
+        <div class="input_outer">
+            <span class="u_user"></span>
+            <input id="username" name="username" class="text" type="text" placeholder="任意中文名">
+        </div>
+        <div class="input_outer">
+            <span class="us_uer"></span>
+            <input id="password" name="password" class="text" type="password" placeholder="任意密码">
+        </div>
+        <div class="mb2">
+            <a class="act-but submit" onclick="login()">登录</a>
+        </div>
+    </form>
+</div>
+
+<script>
+
+    /**
+     * 登陆聊天
+     */
+    function login() {
+        location.href = '/index?username='+$('#username').val();
+    }
+
+    /**
+     * 使用ENTER登陆
+     */
+    document.onkeydown = function (event) {
+        var e = event || window.event || arguments.callee.caller.arguments[0];
+        e.keyCode === 13 && login();
+    };
+</script>
+
+
+</body>
+</html>

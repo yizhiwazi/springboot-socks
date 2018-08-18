@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>WebSocket简单聊天室</title>
+    <meta charset="utf-8" name="viewport" content="width=device-width">
+    <link rel="stylesheet" th:href="@{/webjars/mdui/dist/css/mdui.css}">
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script th:src="@{/webjars/mdui/dist/js/mdui.js}"></script>
+</head>
+<body class="mdui-theme-primary-indigo mdui-theme-accent-pink">
+
+<div class="mdui-container">
+    <div class="mdui-toolbar mdui-color-theme">
+        <a class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">menu</i></a>
+        <span class="mdui-typo-title">简单聊天室</span>
+        <div class="mdui-toolbar-spacer"></div>
+        <a class="mdui-btn mdui-btn-icon" href="https://www.jianshu.com/p/964370d9374e" target="_blank"><i
+                class="mdui-icon material-icons">search</i></a>
+        <a class="mdui-btn mdui-btn-icon" th:href="@{/}"><i
+                class="mdui-icon material-icons">exit_to_app</i></a>
+        <a class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">more_vert</i></a>
+    </div>
+</div>
+
+<div>
+    <div class="mdui-container container_text">
+
+        <div class="mdui-row">
+            <div class="mdui-col-xs-12 mdui-col-sm-6">
+                <div class="mdui-col-xs-12 mdui-col-sm-10">
+                    <div class="mdui-textfield-floating-label" style="margin-top:15px">
+                        <i class="mdui-icon material-icons">欢迎：</i>
+                        <i class="mdui-icon" id="username" th:text="${username}"></i>
+                    </div>
+                </div>
+                <div class="mdui-col-xs-12 mdui-col-sm-10">
+                    <div class="mdui-textfield mdui-textfield-floating-label">
+                        <i class="mdui-icon material-icons">textsms</i>
+                        <label class="mdui-textfield-label">发送内容</label>
+                        <input class="mdui-textfield-input" id="msg"/>
+                    </div>
+                    <div class="mdui-container" style="padding:20px 35px">
+                        <button class="mdui-btn mdui-color-theme-accent mdui-ripple"
+                                onclick="sendMsgToServer()">发送 (enter)
+                        </button>
+                        <button class="mdui-btn mdui-color-theme mdui-ripple"
+                                onclick="clearMsg()">清屏
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mdui-col-xs-6 mdui-col-sm-5" style="padding:10px 0">
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon mdui-color-blue">
+                        <i class="mdui-icon material-icons">&#xe420;</i></span>
+                    <span class="mdui-chip-title">聊天内容</span>
+                </div>
+
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon mdui-color-blue">
+                        <i class="mdui-icon material-icons">face</i></span>
+                    <span class="mdui-chip-title">在线人数</span>
+                    <span class="mdui-chip-title chat-num">0</span>
+                </div>
+                <div class="message-container">
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+
+    /**
+     * WebSocket客户端
+     *
+     * 使用说明：
+     * 1、WebSocket客户端通过回调函数来接收服务端消息。例如：webSocket.onmessage
+     * 2、WebSocket客户端通过send方法来发送消息给服务端。例如：webSocket.send();
+     */
+    function getWebSocket() {
+        /**
+         * WebSocket客户端 PS：URL开头表示WebSocket协议 中间是域名端口 结尾是服务端映射地址
+         */
+        var webSocket = new WebSocket('ws://localhost:8080/chat');
+        /**
+         * 当服务端打开连接
+         */
+        webSocket.onopen = function (event) {
+            console.log('WebSocket打开连接');
+        };
+
+        /**
+         * 当服务端发来消息：1.广播消息 2.更新在线人数
+         */
+        webSocket.onmessage = function (event) {
+            console.log('WebSocket收到消息：%c' + event.data, 'color:green');
+            //获取服务端消息
+            var message = JSON.parse(event.data) || {};
+            var $messageContainer = $('.message-container');
+            //喉咙发炎
+            if (message.type === 'SPEAK') {
+                $messageContainer.append(
+                    '<div class="mdui-card" style="margin: 10px 0;">' +
+                    '<div class="mdui-card-primary">' +
+                    '<div class="mdui-card-content message-content">' + message.username + "：" + message.msg + '</div>' +
+                    '</div></div>');
+            }
+            $('.chat-num').text(message.onlineCount);
+            //防止刷屏
+            var $cards = $messageContainer.children('.mdui-card:visible').toArray();
+            if ($cards.length > 5) {
+                $cards.forEach(function (item, index) {
+                    index < $cards.length - 5 && $(item).slideUp('fast');
+                });
+            }
+        };
+
+        /**
+         * 关闭连接
+         */
+        webSocket.onclose = function (event) {
+            console.log('WebSocket关闭连接');
+        };
+
+        /**
+         * 通信失败
+         */
+        webSocket.onerror = function (event) {
+            console.log('WebSocket发生异常');
+
+        };
+        return webSocket;
+    }
+
+    var webSocket = getWebSocket();
+
+
+    /**
+     * 通过WebSocket对象发送消息给服务端
+     */
+    function sendMsgToServer() {
+        var $message = $('#msg');
+        if ($message.val()) {
+            webSocket.send(JSON.stringify({username: $('#username').text(), msg: $message.val()}));
+            $message.val(null);
+        }
+
+    }
+    /**
+     * 清屏
+     */
+    function clearMsg(){
+      $(".message-container").empty();
+    }
+
+    /**
+     * 使用ENTER发送消息
+     */
+    document.onkeydown = function (event) {
+        var e = event || window.event || arguments.callee.caller.arguments[0];
+        e.keyCode === 13 && sendMsgToServer();
+    };
+
+
+</script>
+
+</body>
+</html>
+
+
