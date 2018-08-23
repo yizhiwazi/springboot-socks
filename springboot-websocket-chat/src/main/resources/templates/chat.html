@@ -72,7 +72,7 @@
     </div>
 </div>
 
-<script>
+<script th:inline="javascript">
 
     /**
      * WebSocket客户端
@@ -85,7 +85,7 @@
         /**
          * WebSocket客户端 PS：URL开头表示WebSocket协议 中间是域名端口 结尾是服务端映射地址
          */
-        var webSocket = new WebSocket('ws://localhost:8080/chat');
+        var webSocket = new WebSocket(/*[[${webSocketUrl}]]*/ 'ws://localhost:8080/chat');
         /**
          * 当服务端打开连接
          */
@@ -150,11 +150,12 @@
         }
 
     }
+
     /**
      * 清屏
      */
-    function clearMsg(){
-      $(".message-container").empty();
+    function clearMsg() {
+        $(".message-container").empty();
     }
 
     /**
