@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{user.title}">用户登陆</title>
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script th:src="@{/webjars/jquery-i18n-properties/jquery.i18n.properties.min.js}"></script>
+
+    <script th:inline="javascript">
+        //获取应用路径
+        var ROOT = [[${#servletContext.contextPath}]];
+
+        //获取默认语言
+        var LANG_COUNTRY = [[${#locale.language+'_'+#locale.country}]];
+
+        //初始化i18n插件
+        $.i18n.properties({
+            path: ROOT + '/i18n/',//这里表示访问路径
+            name: 'messages',//文件名开头
+            language: LANG_COUNTRY,//文件名语言 例如en_US
+            mode: 'both'//默认值
+        });
+
+        //初始化i18n函数
+        function i18n(msgKey) {
+            try {
+                return $.i18n.prop(msgKey);
+            } catch (e) {
+                return msgKey;
+            }
+        }
+
+        //获取国际化翻译值
+        console.log(i18n('user.title'));
+        console.log(i18n('User Login'));
+    </script>
+
+    <style>
+        *, *:after, *:before {
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #383a3c;
+            font-weight: 400;
+            font-size: 1em;
+            line-height: 1.25;
+            font-family: 'Raleway', Calibri, Arial, sans-serif;
+        }
+
+        a, button {
+            outline: none;
+        }
+
+        a {
+            color: #566473;
+            text-decoration: none;
+        }
+
+        a:hover, a:focus {
+            color: #34495e;
+        }
+
+        section {
+            padding: 1em;
+            text-align: center;
+        }
+
+        .logo_box {
+            width: 400px;
+            height: 500px;
+            padding: 35px;
+            color: #EEE;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -200px;
+            margin-top: -250px;
+        }
+
+        .logo_box h3 {
+            text-align: center;
+            height: 20px;
+            font: 20px "microsoft yahei", Helvetica, Tahoma, Arial, "Microsoft jhengHei", sans-serif;
+            color: #FFFFFF;
+            line-height: 20px;
+            padding: 0 0 35px 0;
+        }
+
+        .input_outer {
+            height: 46px;
+            padding: 0 5px;
+            margin-bottom: 30px;
+            border-radius: 50px;
+            position: relative;
+            border: rgba(255, 255, 255, 0.2) 2px solid !important;
+        }
+
+        .u_user {
+            width: 25px;
+            height: 25px;
+            background-position: -125px 0;
+            position: absolute;
+            margin: 10px 13px;
+        }
+
+        .us_uer {
+            width: 25px;
+            height: 25px;
+            background-position: -125px -34px;
+            position: absolute;
+            margin: 10px 13px;
+        }
+
+        .text {
+            width: 220px;
+            height: 46px;
+            outline: none;
+            display: inline-block;
+            font: 14px "microsoft yahei", Helvetica, Tahoma, Arial, "Microsoft jhengHei";
+            margin-left: 50px;
+            border: none;
+            background: none;
+            line-height: 46px;
+        }
+
+        .mb2 {
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        .mb2 a {
+            text-decoration: none;
+            outline: none;
+        }
+
+        .submit {
+            padding: 15px;
+            margin-top: 20px;
+            display: block;
+            color: #FFFFFF
+        }
+
+        .act-but {
+            line-height: 20px;
+            text-align: center;
+            font-size: 20px;
+            border-radius: 50px;
+            background: #0096e6;
+        }
+
+        #username {
+            color: #FFFFFF !important
+        }
+
+        #password {
+            color: #FFFFFF !important;
+            position: absolute;
+            z-index: 100;
+        }
+
+    </style>
+</head>
+<body>
+<div class="logo_box">
+    <select id="locale">
+        <option value="zh_CN">中文简体</option>
+        <option value="zh_TW">中文繁体</option>
+        <option value="en_US">English</option>
+    </select>
+    <h3 th:text="#{user.welcome}">欢迎登陆</h3>
+
+    <form>
+        <div class="input_outer">
+            <span class="u_user"></span>
+            <input id="username" name="username" class="text" type="text" th:placeholder="#{user.username}">
+        </div>
+        <div class="input_outer">
+            <span class="us_uer"></span>
+            <input id="password" name="password" class="text" type="password" th:placeholder="#{user.password}">
+        </div>
+        <div class="mb2">
+            <a class="act-but submit" th:text="#{user.login}">登录</a>
+        </div>
+    </form>
+</div>
+
+
+<script th:inline="javascript">
+    //选中语言
+    $("#locale").find('option[value="' + LANG_COUNTRY + '"]').attr('selected', true);
+
+    //切换语言
+    $("#locale").change(function () {
+        $.get(ROOT + '/?lang=' + $("#locale").val(), function () {
+            location.reload();
+        });
+    });
+
+</script>
+
+
+</body>
+</html>

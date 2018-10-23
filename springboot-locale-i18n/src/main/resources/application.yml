@@ -1,0 +1,6 @@
+spring:
+  thymeleaf:
+    cache: false #关闭页面缓存
+    prefix: classpath:/views/ #页面拼接路径
+  messages:
+    basename: static/i18n/messages #相对路径 首部请勿添加斜杠
