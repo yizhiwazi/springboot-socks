@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>Origin Web</title>
+</head>
+<body>
+
+<h2>Origin Web</h2>
+
+<div id="user1"></div>
+
+<div id="user2"></div>
+
+
+</body>
+
+<script src="/webjars/jquery/3.3.1/jquery.js"></script>
+
+<script>
+    $.ajax({
+        url: 'http://localhost:9000/user/findByObject',
+        type: "post",
+        data: {userId: '1'},//发送数据
+        xhrFields: {
+            withCredentials: true//表示跨域时要求客户端发送Cookie等认证信息 涉及登陆必须开启
+        },
+        success: function (data) {
+            $("#user1").html("跨域成功：" + data.username);
+        },
+        error: function (xhr) {
+            console.log(xhr);
+            $("#user1").html("跨域失败：" + xhr.responseText);
+        }
+    })
+
+    $.ajax({
+        url: 'http://localhost:9000/user/findByJson',
+        type: "post",
+        contentType: 'application/json',//发送格式（JSON串）
+        data: JSON.stringify({userId: '1'}),//发送数据（JSON串）
+        xhrFields: {
+            withCredentials: true //表示跨域时要求客户端发送Cookie等认证信息 涉及登陆必须开启
+        },
+        success: function (data) {
+            $("#user2").html("跨域成功：" + data.username);
+        },
+        error: function (xhr) {
+            console.log(xhr);
+            $("#user2").html("跨域失败：" + xhr.responseText);
+        }
+    })
+</script>
+
+</html>
