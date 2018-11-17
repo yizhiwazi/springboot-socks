@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>日期格式化</title>
+</head>
+<body>
+<h3><a th:href="@{/}">1.在页面中对日期格式化</a></h3>
+<form th:object="${user}">
+    <input th:value="*{userId}" type="hidden">
+    账号：<input th:value="*{username}">
+    密码：<input th:value="*{password}" type="password">
+    时间：<input th:value="*{createTime}" type="text">
+</form>
+<form th:object="${user}">
+    账号：<input th:value="*{username}">
+    密码：<input th:value="*{password}" type="password">
+    时间：<input th:value="*{#dates.format(createTime,'yyyy-MM-dd HH:mm:ss')}">
+</form>
+
+<h3><a th:href="@{/user/json}">2.点击获取JSON信息</a></h3>
+<pre>
+{
+  "userId": "1",
+  "username": "admin",
+  "password": "123456",
+  "createTime": "2018-11-18 00:58:48"
+}
+</pre>
+
+<h3><a th:href="@{/user/xml}">3.点击获取XML信息</a></h3>
+<xmp>
+<User>
+ <userId>1</userId>
+ <username>admin</username>
+ <password>123456</password>
+ <createTime>2018-11-18 00:59:02</createTime>
+</User>
+</xmp>
+
+</body>
+</html>
