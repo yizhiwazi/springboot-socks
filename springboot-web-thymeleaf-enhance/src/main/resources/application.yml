@@ -1,9 +1,4 @@
-server:
-  port: 8081
-  servlet:
-    context-path: /socks
-
 spring:
   thymeleaf:
     cache: false #关闭缓存
-    prefix: classpath:/views/ #添加路径前缀
+    prefix: classpath:/views/ #调整页面路径

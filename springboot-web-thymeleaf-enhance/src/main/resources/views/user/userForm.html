@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="用户信息">User</title>
+    <script th:replace="common/head::static"></script>
+</head>
+<body>
+<h3>用户表单</h3>
+<form class="form-horizontal" th:object="${user}">
+    <input type="hidden" id="id" name="id" th:value="*{id}">
+    <div class="form-group">
+        <label class="col-md-2 control-label">账号:</label>
+        <div class="col-md-4">
+            <input class="form-control" id="username" name="username" th:value="*{username}"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">密码:</label>
+        <div class="col-md-4">
+            <input class="form-control" id="password" name="password" th:value="*{password}" type="password"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">时间:</label>
+        <div class="col-md-4">
+            <input class="form-control" id="createTime" name="createTime" th:value="*{#dates.format(createTime,'yyyy-MM-dd HH:mm:ss')}" />
+        </div>
+    </div>
+</form>
+
+</body>
+</html>

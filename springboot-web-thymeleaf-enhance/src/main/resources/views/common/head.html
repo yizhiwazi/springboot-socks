@@ -1,14 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <head th:fragment="static">
-        <script th:src="@{/webjars/jquery/3.3.1/jquery.js}"></script>
-    </head>
+<!--声明static为页面片段名称-->
+<head th:fragment="static">
+    <link th:href="@{/webjars/bootstrap/css/bootstrap.css}" rel="stylesheet" type="text/css"/>
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <link th:href="@{/webjars/bootstrap/js/bootstrap.min.js}" rel="stylesheet" type="text/css"/>
 </head>
-<body>
- <div>
-     I am Common Head !!
- </div>
-
-</body>
 </html>
