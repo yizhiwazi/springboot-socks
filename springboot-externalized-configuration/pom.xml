@@ -27,7 +27,7 @@
 		<dependency><!--添加MySQL驱动依赖-->
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.42</version>
+			<version>8.0.16</version>
 		</dependency>
 		<dependency><!--添加配置处理器依赖-->
 			<groupId>org.springframework.boot</groupId>
