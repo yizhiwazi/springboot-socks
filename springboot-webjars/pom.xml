@@ -37,7 +37,7 @@
         <dependency><!--Bootstrap框架（前端）-->
             <groupId>org.webjars</groupId>
             <artifactId>bootstrap</artifactId>
-            <version>4.1.1</version>
+            <version>4.3.1</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
