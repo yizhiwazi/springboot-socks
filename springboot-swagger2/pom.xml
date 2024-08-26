@@ -31,7 +31,7 @@
         <dependency><!--添加Swagger-UI依赖 -->
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
-            <version>2.7.0</version>
+            <version>2.10.0</version>
         </dependency>
         <dependency> <!--添加热部署依赖 -->
             <groupId>org.springframework.boot</groupId>
